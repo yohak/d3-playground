@@ -43,6 +43,46 @@ export const SideBar: FC<SideBarProps> = ({}) => {
   const isGraphAnimating = useRecoilValue(isGraphAnimatingState);
   const [allCheckState, setAllCheckState] = useState<ALL_CHECK>(ALL_CHECK.ON);
 
+  useEffect(() => {
+    const EVENT_POP_STATE = "popstate";
+    const setQuery = () => {
+      const query: QueryInfo = parseSearchQuery(location.search);
+      setCategory(query?.category ?? categoryOptions[0].value);
+      setYear(query?.year ?? yearOptions[0].value);
+    };
+    const popStateEventHandler = () => {
+      setQuery();
+    };
+    window.addEventListener(EVENT_POP_STATE, popStateEventHandler);
+    setQuery();
+
+    return () => {
+      window.removeEventListener(EVENT_POP_STATE, popStateEventHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    const searchQuery: QueryInfo = parseSearchQuery(location.search);
+    const queryObj: QueryInfo = {};
+    year ? (queryObj.year = year) : "";
+    category ? (queryObj.category = category) : "";
+    setSearchQuery(queryObj);
+    if (
+      !year &&
+      !category &&
+      (!!searchQuery?.year || !!searchQuery?.category)
+    ) {
+      return;
+    }
+    //
+    const _year = year ? year : yearOptions[0].value;
+    const _category = category ? category : categoryOptions[0].value;
+    const url = `https://satoshionoda.github.io/j-score/matches-${_category}-${_year}.json`;
+    fetch(url).then((res) =>
+      res.json().then((matches: MatchData[]) => processLoadedData(matches))
+    );
+  }, [year, category]);
+
   const processLoadedData = (matches: MatchData[]) => {
     const aclLine: BorderArea = {
       top: true,
@@ -59,24 +99,6 @@ export const SideBar: FC<SideBarProps> = ({}) => {
     const _visibilities = points.map((r) => ({ visible: true, team: r.team }));
     setVisibilities(_visibilities);
   };
-
-  useEffect(() => {
-    const searchQuery: QueryInfo = parseSearchQuery(location.search);
-    const queryObj: QueryInfo = {};
-    year ? (queryObj.year = year) : "";
-    category ? (queryObj.category = category) : "";
-    setSearchQuery(queryObj);
-    if (!year && !category && (!!searchQuery.year || !!searchQuery.category)) {
-      return;
-    }
-    //
-    const _year = year ? year : yearOptions[0].value;
-    const _category = category ? category : categoryOptions[0].value;
-    const url = `https://satoshionoda.github.io/j-score/matches-${_category}-${_year}.json`;
-    fetch(url).then((res) =>
-      res.json().then((matches: MatchData[]) => processLoadedData(matches))
-    );
-  }, [year, category]);
 
   useEffect(() => {
     if (!graphData) {
@@ -96,16 +118,6 @@ export const SideBar: FC<SideBarProps> = ({}) => {
     }
     setAllCheckState(result);
   }, [visibilities]);
-
-  useEffect(() => {
-    const query: QueryInfo = parseSearchQuery(location.search);
-    if (!!query.category && query.category !== category) {
-      setCategory(query.category);
-    }
-    if (!!query.year && query.year !== year) {
-      setYear(query.year);
-    }
-  }, []);
 
   const changeChecked = (team: string) => {
     if (isGraphAnimating) {

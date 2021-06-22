@@ -1,4 +1,7 @@
 export const parseSearchQuery = <T>(str: string): T => {
+  if (!str) {
+    return undefined;
+  }
   const query = str.substring(1);
   const vars = query.split("&");
   const result: any = {};
