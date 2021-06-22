@@ -26,9 +26,7 @@ export type GraphData = {
 };
 type CircleData = { match: MatchData; stats: TeamStats };
 
-type D3Selection = d3.Selection<any, any, any, any>;
-type D3SelectionWidthTeamStats = d3.Selection<any, TeamStats, any, any>;
-type D3SelectionWidthCircleData = d3.Selection<any, CircleData, any, any>;
+type D3Selection<Datum = any> = d3.Selection<any, Datum, any, any>;
 type D3ScaleLinear = d3.ScaleLinear<number, number>;
 type Transition = d3.Transition<any, any, any, any>;
 
@@ -142,11 +140,11 @@ export class Graph {
       .on("end", () => {
         this.setAnimating(false);
       });
-    const line: D3SelectionWidthTeamStats = this.lineWrapper
+    const line: D3Selection<TeamStats> = this.lineWrapper
       .selectAll<SVGGElement, TeamStats>("g")
       .data(drawData, (d) => d.team);
 
-    const lineEnter: D3SelectionWidthTeamStats = line
+    const lineEnter: D3Selection<TeamStats> = line
       .enter()
       .append("g")
       .attr("id", (d) => `g-${d.team}`)
@@ -200,7 +198,7 @@ export class Graph {
           stats: s,
         }))
     );
-    const circleEnter: D3SelectionWidthCircleData = circle
+    const circleEnter: D3Selection<CircleData> = circle
       .enter()
       .append("circle")
       .attr("fill", (d) => findColor(d.stats.team).color2)
@@ -237,9 +235,9 @@ export class Graph {
     }, 16);
 
     this.lineWrapper
-      .selectAll("g")
-      .classed("active", (d) => (d as TeamStats).team === team)
-      .classed("inactive", (d) => (d as TeamStats).team !== team);
+      .selectAll<SVGGElement, TeamStats>("g")
+      .classed("active", (d) => d.team === team)
+      .classed("inactive", (d) => d.team !== team);
   }
 
   public unFocus() {
