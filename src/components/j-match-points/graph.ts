@@ -5,11 +5,11 @@ import {
   MatchData,
   TeamStats,
 } from "./process-data";
-import { COLOR_BG1, ColorInfo, teamColors } from "../consts";
-import { Margin } from "../../../utils/geom/margin";
-import { Area } from "../../../utils/geom/area";
-import { Visibility } from "../atoms";
-import { insertBefore } from "../../../utils/dom";
+import { COLOR_BG1, ColorInfo, teamColors } from "./consts";
+import { Margin } from "../../utils/geom/margin";
+import { Area } from "../../utils/geom/area";
+import { Visibility } from "./atoms";
+import { insertBefore } from "../../utils/dom";
 
 export type BorderArea = {
   top: number[] | true;

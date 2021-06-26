@@ -1,41 +1,7 @@
-import React, { FC } from "react";
 import styled from "styled-components";
-import { COLOR_BG3 } from "./consts";
-import { MatchData } from "./logic/process-data";
-import { useRecoilValue } from "recoil";
-import { focusedMatchState } from "./atoms";
+import { COLOR_BG3 } from "../consts";
 
-export type InfoProps = {};
-
-export const InfoView: FC<InfoProps> = ({}) => {
-  const match = useRecoilValue(focusedMatchState);
-
-  return (
-    <Wrapper className={match ? "has-data" : ""}>
-      {match && (
-        <div>
-          <p className={"date"}>{match?.date}</p>
-          <p className={"score"}>
-            <span>
-              <span className={"home"}>{match.homeScore}</span>
-              <span>-</span>
-              <span className={"away"}>{match.awayScore}</span>
-            </span>
-          </p>
-          <p className={"team"}>
-            <span>
-              <span className={"home"}>{match?.homeTeam}</span>
-              <span>VS</span>
-              <span className={"away"}>{match?.awayTeam}</span>
-            </span>
-          </p>
-        </div>
-      )}
-    </Wrapper>
-  );
-};
-
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   width: 150px;
   height: 80px;
   box-sizing: border-box;

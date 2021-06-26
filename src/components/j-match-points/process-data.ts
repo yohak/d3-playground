@@ -1,5 +1,5 @@
 import { isBefore, parseISO } from "date-fns";
-import { transpose } from "../../../utils/array";
+import { transpose } from "../../utils/array";
 
 export const processMatchStats = (allMatches: MatchData[]): TeamStats[] => {
   return extractTeamNames(allMatches)

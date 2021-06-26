@@ -1,6 +1,6 @@
 import { atom } from "recoil";
-import { GraphData } from "./logic/graph";
-import { MatchData } from "./logic/process-data";
+import { GraphData } from "./graph";
+import { MatchData } from "./process-data";
 
 export const graphDataState = atom<GraphData>({
   key: "graphDataState",
@@ -29,5 +29,5 @@ export const focusedMatchState = atom<MatchData>({
 
 export const isGraphAnimatingState = atom<boolean>({
   key: "isGraphAnimating",
-  default: false,
+  default: undefined,
 });

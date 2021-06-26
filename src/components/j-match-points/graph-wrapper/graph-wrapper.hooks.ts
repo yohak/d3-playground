@@ -1,21 +1,18 @@
-import React, { FC, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   focusedMatchState,
   focusedTeamState,
   graphDataState,
   isGraphAnimatingState,
   visibilityState,
-} from "./atoms";
-import { Graph } from "./logic/graph";
-import { destroy } from "../../utils/d3";
+} from "../atoms";
+import { useEffect, useRef } from "react";
+import { destroy } from "../../../utils/d3";
+import { Graph } from "../graph";
 
-export type GraphWrapperProps = {};
-
-export const GraphWrapper: FC<GraphWrapperProps> = ({}) => {
-  const graphData = useRecoilValue(graphDataState);
-  const visibilities = useRecoilValue(visibilityState);
+export const useGraphWrapper = () => {
+  const [graphData, setGraphData] = useRecoilState(graphDataState);
+  const [visibilities, setVisibilities] = useRecoilState(visibilityState);
   const [focusedTeam, setFocusedTeam] = useRecoilState(focusedTeamState);
   const [isGraphAnimating, setIsGraphAnimating] = useRecoilState(
     isGraphAnimatingState
@@ -66,7 +63,7 @@ export const GraphWrapper: FC<GraphWrapperProps> = ({}) => {
     Graph.getInstance().drawLines(visibilities);
   }, [visibilities]);
   useEffect(() => {
-    if (focusedTeam) {
+    if (!!focusedTeam) {
       if (!isGraphAnimating) {
         Graph.getInstance().focus(focusedTeam);
       }
@@ -75,7 +72,9 @@ export const GraphWrapper: FC<GraphWrapperProps> = ({}) => {
     }
   }, [focusedTeam]);
   useEffect(() => {
-    Graph.getInstance().unFocus();
+    if (isGraphAnimating !== undefined) {
+      Graph.getInstance().unFocus();
+    }
   }, [isGraphAnimating]);
   useEffect(() => {
     if (focusedMatch && focusedTeam) {
@@ -83,47 +82,20 @@ export const GraphWrapper: FC<GraphWrapperProps> = ({}) => {
     } else {
       Graph.getInstance().removeOpponentCircle();
     }
-  }, [focusedMatch]);
+  }, [focusedMatch, focusedTeam]);
 
-  return <Wrapper ref={d3Canvas} />;
+  const __TEST__ = {
+    graphData,
+    setGraphData,
+    visibilities,
+    setVisibilities,
+    focusedTeam,
+    setFocusedTeam,
+    isGraphAnimating,
+    setIsGraphAnimating,
+    focusedMatch,
+    setFocusedMatch,
+  };
+
+  return { d3Canvas, __TEST__ };
 };
-
-const Wrapper = styled.div`
-  height: 100%;
-  @keyframes dash {
-    to {
-      stroke-dashoffset: -80;
-    }
-  }
-
-  .graph-cover {
-    opacity: 0;
-    pointer-events: none;
-    transition-duration: 0.3s;
-    transition-property: opacity;
-    transition-timing-function: ease-in-out;
-
-    &.active {
-      opacity: 0.8;
-    }
-  }
-
-  .line-group {
-    cursor: pointer;
-    path.dashed {
-      pointer-events: none;
-    }
-
-    &.active {
-      path.dashed {
-        animation-name: dash;
-        animation-duration: 2000ms;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-      }
-    }
-
-    &.inactive {
-    }
-  }
-`;
