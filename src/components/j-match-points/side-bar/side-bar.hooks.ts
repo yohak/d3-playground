@@ -7,7 +7,7 @@ import {
   visibilityState,
 } from "../atoms";
 import { parseSearchQuery, setSearchQuery } from "../../../utils/location";
-import { categoryOptions, yearOptions } from "../consts";
+import { categoryOptions, SelectOption, yearOptions } from "../consts";
 import { findBorderLine, MatchData, processMatchStats } from "../process-data";
 import { BorderArea } from "../graph";
 import { ALL_CHECK, QueryInfo } from "./side-bar";
@@ -55,6 +55,14 @@ export const useSideBar = () => {
     //
     const _year = year ? year : yearOptions[0].value;
     const _category = category ? category : categoryOptions[0].value;
+    if (_category === "j2" && parseInt(_year) < 1999) {
+      setYear("1999");
+      return;
+    }
+    if (_category === "j3" && parseInt(_year) < 2014) {
+      setYear("2014");
+      return;
+    }
     const url = `https://satoshionoda.github.io/j-score/matches-${_category}-${_year}.json`;
     fetch(url).then((res) =>
       res.json().then((matches: MatchData[]) => processLoadedData(matches))

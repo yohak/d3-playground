@@ -1,3 +1,5 @@
+import { makeRangeNumbers } from "../../utils/array";
+
 export const COLOR_BG1: string = "#2c2c2c";
 export const COLOR_BG2: string = "#303233";
 export const COLOR_BG3: string = "#1a1a1c";
@@ -10,6 +12,7 @@ export const teamColors: ColorInfo[] = [
   { color1: "#ffffff", color2: "#093190", team: "大分" },
   { color1: "#6a5594", color2: "#51308f", team: "広島" },
   { color1: "#b7173e", color2: "#beb1aa", team: "鹿島" },
+  { color1: "#7db966", color2: "#005ca2", team: "平塚" },
   { color1: "#7db966", color2: "#005ca2", team: "湘南" },
   { color1: "#f82880", color2: "#161e82", team: "Ｃ大阪" },
   { color1: "#f82880", color2: "#161e82", team: "Ｃ大23" },
@@ -26,6 +29,8 @@ export const teamColors: ColorInfo[] = [
   { color1: "#fff103", color2: "#241815", team: "柏" },
   { color1: "#d70a19", color2: "#ec9202", team: "名古屋" },
   { color1: "#FFFFFF", color2: "#135ec6", team: "横浜FM" },
+  { color1: "#FFFFFF", color2: "#135ec6", team: "横浜M" },
+  { color1: "#FFFFFF", color2: "#009cc2", team: "横浜Ｆ" },
   { color1: "#024da2", color2: "#000000", team: "Ｇ大阪" },
   { color1: "#024da2", color2: "#000000", team: "Ｇ大23" },
   { color1: "#6590c3", color2: "#000000", team: "磐田" },
@@ -39,14 +44,17 @@ export const teamColors: ColorInfo[] = [
   { color1: "#9a093e", color2: "#d6c77e", team: "琉球" },
   { color1: "#0f3481", color2: "#1a67b3", team: "町田" },
   { color1: "#006635", color2: "#a59264", team: "東京Ｖ" },
+  { color1: "#006635", color2: "#a59264", team: "Ｖ川崎" },
   { color1: "#235793", color2: "#FFFFFF", team: "水戸" },
   { color1: "#000000", color2: "#d4032b", team: "金沢" },
   { color1: "#f7de00", color2: "#006a2b", team: "千葉" },
+  { color1: "#f7de00", color2: "#006a2b", team: "市原" },
   { color1: "#004093", color2: "#FFFFFF", team: "秋田" },
   { color1: "#b0003b", color2: "#1b2366", team: "岡山" },
   { color1: "#fff100", color2: "#005bac", team: "栃木" },
   { color1: "#ff8527", color2: "#252726", team: "山口" },
   { color1: "#225290", color2: "#fdd448", team: "群馬" },
+  { color1: "#225290", color2: "#fdd448", team: "草津" },
   { color1: "#f9c900", color2: "#ea1300", team: "北九州" },
   { color1: "#3c0a8f", color2: "#ff951c", team: "愛媛" },
   { color1: "#278e42", color2: "#000000", team: "相模原" },
@@ -70,16 +78,12 @@ export const teamColors: ColorInfo[] = [
 ];
 
 export type SelectOption = { label: string; value: string };
-export const yearOptions: SelectOption[] = [
-  { label: "2021年", value: "2021" },
-  { label: "2020年", value: "2020" },
-  { label: "2019年", value: "2019" },
-  { label: "2018年", value: "2018" },
-  { label: "2017年", value: "2017" },
-  { label: "2016年", value: "2016" },
-  { label: "2015年", value: "2015" },
-  { label: "2014年", value: "2014" },
-];
+export const yearOptions: SelectOption[] = makeRangeNumbers(1993, 2021)
+  .map((r) => ({
+    label: `${r}年`,
+    value: `${r}`,
+  }))
+  .reverse();
 export const categoryOptions: SelectOption[] = [
   { label: "J1", value: "j1" },
   { label: "J2", value: "j2" },
