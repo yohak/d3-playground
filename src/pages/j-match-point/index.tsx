@@ -1,10 +1,10 @@
 import Head from "next/head";
-import { COLOR_BG2, COLOR_BG3 } from "../../components/j-match-points/consts";
+import { COLOR_BG2, COLOR_BG3 } from "../../components/j-match-point/consts";
 import styled from "styled-components";
 import { Grommet } from "grommet";
-import { SideBar } from "../../components/j-match-points/side-bar/side-bar";
-import { GraphWrapper } from "../../components/j-match-points/graph-wrapper/graph-wrapper";
-import { InfoView } from "../../components/j-match-points/info-view/info-view";
+import { SideBar } from "../../components/j-match-point/side-bar/side-bar";
+import { GraphWrapper } from "../../components/j-match-point/graph-wrapper/graph-wrapper";
+import { InfoView } from "../../components/j-match-point/info-view/info-view";
 import { myTheme } from "../../styles/grommet";
 
 export default function JMatchPoints() {
