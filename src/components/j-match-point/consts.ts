@@ -78,7 +78,7 @@ export const teamColors: ColorInfo[] = [
 ];
 
 export type SelectOption = { label: string; value: string };
-export const yearOptions: SelectOption[] = makeRangeNumbers(1993, 2021)
+export const yearOptions: SelectOption[] = makeRangeNumbers(1993, 2022)
   .map((r) => ({
     label: `${r}年`,
     value: `${r}`,
